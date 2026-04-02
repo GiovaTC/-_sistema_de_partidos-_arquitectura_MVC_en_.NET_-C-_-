@@ -1,7 +1,9 @@
 # -_sistema_de_partidos-_arquitectura_MVC_en_.NET_-C-_- :.
 ⚽ Sistema de Partidos - Arquitectura MVC en .NET (C#):
 
-<img width="1024" height="1024" alt="image" src="https://github.com/user-attachments/assets/a35db4b0-dc92-438f-8c10-31707a33fc9b" />  
+<img width="1024" height="1024" alt="image" src="https://github.com/user-attachments/assets/a35db4b0-dc92-438f-8c10-31707a33fc9b" /> 
+
+<img width="2532" height="1076" alt="image" src="https://github.com/user-attachments/assets/3b35939a-8423-47bd-83ea-0dca11d6784a" /> 
 
 ```
 
