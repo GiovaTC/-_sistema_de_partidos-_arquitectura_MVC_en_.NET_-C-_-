@@ -1,4 +1,5 @@
 ﻿using sistema_de_partidos.Controllers;
+using sistema_de_partidos.Models;
 using System;
 using System.Collections.Generic;
 
@@ -24,11 +25,6 @@ namespace sistema_de_partidos.Views
                 EjecutarOpcion(opcion);
                 
             } while (opcion != 0);
-        }
-
-        private int LeerEntero(string v)
-        {
-            throw new NotImplementedException();
         }
 
         private void MostrarMenu()
@@ -64,24 +60,70 @@ namespace sistema_de_partidos.Views
             }
         }
 
-        private void EliminarPartido()
+        private void CrearPartido()
         {
-            throw new NotImplementedException();
-        }
+            var p = new Partido
+            {
+                EquipoLocal = LeerTexto("Equipo Local: "),
+                EquipoVisitante = LeerTexto("Equipo Visitante: "),
+                GolesLocal = LeerEntero("Goles Local: "),
+                GolesVisitante = LeerEntero("Goles Visitante: ")
+            };
 
-        private void ActualizarPartido()
-        {
-            throw new NotImplementedException();
+            controller.Crear(p);
+            Console.WriteLine("✔ Registrado correctamente");
         }
 
         private void ListarPartidos()
         {
-            throw new NotImplementedException();
+            var lista = controller.Listar();
+
+            Console.WriteLine("\nID | LOCAL vs VISITANTE | GL-GV | RESULTADO");
+            Console.WriteLine("------------------------------------------------");
+
+            foreach (var p in lista)
+            {
+                Console.WriteLine($"{p.Id} | {p.EquipoLocal} vs {p.EquipoVisitante} | {p.GolesLocal}-{p.GolesVisitante} | {p.Resultado}");
+            }
         }
 
-        private void CrearPartido()
+        private void ActualizarPartido()
         {
-            throw new NotImplementedException();
+            var p = new Partido
+            {
+                Id = LeerEntero("ID: "),
+                GolesLocal = LeerEntero("Nuevo Goles Local: "),
+                GolesVisitante = LeerEntero("Nuevo Goles Visitante: ")
+            };
+
+            controller.Actualizar(p);
+            Console.WriteLine("✔ Actualizado correctamente");
+        }
+
+        private void EliminarPartido()
+        {
+            int id = LeerEntero("ID a eliminar: ");
+            controller.Eliminar(id);
+            Console.WriteLine("✔ Eliminado correctamente");
+        }
+
+        private string LeerTexto(string msg)
+        {
+            Console.Write(msg);
+            return Console.ReadLine();
+        }
+
+        private int LeerEntero(string msg)
+        {
+            int valor;
+            while (true)
+            {
+                Console.Write(msg);
+                if (int.TryParse(Console.ReadLine(), out valor))
+                    return valor;
+
+                Console.WriteLine("⚠ Número inválido");
+            }
         }
     }
 }
