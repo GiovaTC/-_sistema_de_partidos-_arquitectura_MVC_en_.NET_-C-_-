@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36915.13 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sistema_de_partidos", "sistema_de_partidos.csproj", "{7AC425F1-911A-4FD7-8BA5-7D813B81166C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7AC425F1-911A-4FD7-8BA5-7D813B81166C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AC425F1-911A-4FD7-8BA5-7D813B81166C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AC425F1-911A-4FD7-8BA5-7D813B81166C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AC425F1-911A-4FD7-8BA5-7D813B81166C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {02FBDB68-628E-4132-8EBA-9EF4D9CCDF27}
+	EndGlobalSection
+EndGlobal
