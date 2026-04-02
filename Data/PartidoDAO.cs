@@ -2,6 +2,7 @@
 using sistema_de_partidos.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace sistema_de_partidos.Data
 {
@@ -16,24 +17,34 @@ namespace sistema_de_partidos.Data
 
         public void Insertar(Partido p)
         {
-            using (var conn = new OracleConnection(connectionString))
+            try
             {
-                conn.Open();
-
-                string sql = @"INSERT INTO PARTIDOS
-                                (EQUIPO_LOCAL, EQUIPO_VISITANTE, GOLES_LOCAL, GOLES_VISITANTE, RESULTADO)
-                                VALUES (:local, :visitante, :gl, :gv, :res)";
-
-                using (var cmd = new OracleCommand(sql, conn))
+                using (var conn = new OracleConnection(connectionString))
                 {
-                    cmd.Parameters.Add(":local", p.EquipoLocal);
-                    cmd.Parameters.Add(":visitante", p.EquipoVisitante);
-                    cmd.Parameters.Add(":gl", p.GolesLocal);
-                    cmd.Parameters.Add(":gv", p.GolesVisitante);
-                    cmd.Parameters.Add(":res", p.Resultado);
+                    conn.Open();
 
-                    cmd.ExecuteNonQuery();
+                    string sql = @"INSERT INTO PARTIDOS
+                                   (EQUIPO_LOCAL, EQUIPO_VISITANTE, GOLES_LOCAL, GOLES_VISITANTE, RESULTADO)
+                                   VALUES (:local, :visitante, :gl, :gv, :res)";
+
+                    using (var cmd = new OracleCommand(sql, conn))
+                    {
+                        cmd.BindByName = true;
+
+                        cmd.Parameters.Add(":local", OracleDbType.Varchar2).Value = p.EquipoLocal;
+                        cmd.Parameters.Add(":visitante", OracleDbType.Varchar2).Value = p.EquipoVisitante;
+                        cmd.Parameters.Add(":gl", OracleDbType.Int32).Value = p.GolesLocal;
+                        cmd.Parameters.Add(":gv", OracleDbType.Int32).Value = p.GolesVisitante;
+                        cmd.Parameters.Add(":res", OracleDbType.Varchar2).Value = p.Resultado;
+
+                        cmd.ExecuteNonQuery();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error Insertar: " + ex.ToString());
+                throw;
             }
         }
 
@@ -41,28 +52,40 @@ namespace sistema_de_partidos.Data
         {
             var lista = new List<Partido>();
 
-            using (var conn = new OracleConnection(connectionString))
+            try
             {
-                conn.Open();
-
-                string sql = "SELECT * FROM PARTIDOS";
-
-                using (var cmd = new OracleCommand(sql, conn))
-                using (var reader = cmd.ExecuteReader())
+                using (var conn = new OracleConnection(connectionString))
                 {
-                    while (reader.Read())
+                    conn.Open();
+
+                    string sql = "SELECT * FROM PARTIDOS";
+
+                    using (var cmd = new OracleCommand(sql, conn))
                     {
-                        lista.Add(new Partido
+                        cmd.BindByName = true;
+
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            Id = Convert.ToInt32(reader["ID_PARTIDO"]),
-                            EquipoLocal = reader["EQUIPO_LOCAL"].ToString(),
-                            EquipoVisitante = reader["EQUIPO_VISITANTE"].ToString(),
-                            GolesLocal = Convert.ToInt32(reader["GOLES_LOCAL"]),
-                            GolesVisitante = Convert.ToInt32(reader["GOLES_VISITANTE"]),
-                            Resultado = reader["RESULTADO"].ToString()
-                        });
+                            while (reader.Read())
+                            {
+                                lista.Add(new Partido
+                                {
+                                    Id = Convert.ToInt32(reader["ID_PARTIDO"]),
+                                    EquipoLocal = reader["EQUIPO_LOCAL"].ToString(),
+                                    EquipoVisitante = reader["EQUIPO_VISITANTE"].ToString(),
+                                    GolesLocal = Convert.ToInt32(reader["GOLES_LOCAL"]),
+                                    GolesVisitante = Convert.ToInt32(reader["GOLES_VISITANTE"]),
+                                    Resultado = reader["RESULTADO"].ToString()
+                                });
+                            }
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error Listar: " + ex.ToString());
+                throw;
             }
 
             return lista;
@@ -70,41 +93,62 @@ namespace sistema_de_partidos.Data
 
         public void Actualizar(Partido p)
         {
-            using (var conn = new OracleConnection(connectionString))
+            try
             {
-                conn.Open();
-
-                string sql = @"UPDATE PARTIDOS
-                                SET GOLES_LOCAL = :gl,
-                                    GOLES_VISITANTE = :gv,
-                                    RESULTADO = :res
-                                WHERE ID_PARTIDO = :id";
-
-                using (var cmd = new OracleCommand(sql, conn))
+                using (var conn = new OracleConnection(connectionString))
                 {
-                    cmd.Parameters.Add(":gl", p.GolesLocal);
-                    cmd.Parameters.Add(":gv", p.GolesVisitante);
-                    cmd.Parameters.Add(":res", p.Resultado);
-                    cmd.Parameters.Add(":id", p.Id);
+                    conn.Open();
 
-                    cmd.ExecuteNonQuery();
+                    string sql = @"UPDATE PARTIDOS
+                                   SET GOLES_LOCAL = :gl,
+                                       GOLES_VISITANTE = :gv,
+                                       RESULTADO = :res
+                                   WHERE ID_PARTIDO = :id";
+
+                    using (var cmd = new OracleCommand(sql, conn))
+                    {
+                        cmd.BindByName = true;
+
+                        cmd.Parameters.Add(":gl", OracleDbType.Int32).Value = p.GolesLocal;
+                        cmd.Parameters.Add(":gv", OracleDbType.Int32).Value = p.GolesVisitante;
+                        cmd.Parameters.Add(":res", OracleDbType.Varchar2).Value = p.Resultado;
+                        cmd.Parameters.Add(":id", OracleDbType.Int32).Value = p.Id;
+
+                        cmd.ExecuteNonQuery();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error Actualizar: " + ex.ToString());
+                throw;
             }
         }
 
         public void Eliminar(int id)
         {
-            using (var conn = new OracleConnection(connectionString))
+            try
             {
-                conn.Open();
-
-                string sql = "DELETE FROM PARTIDOS WHERE ID_PARTIDO = :id";
-
-                using (var cmd = new OracleCommand(sql, conn))
+                using (var conn = new OracleConnection(connectionString))
                 {
-                    cmd.Parameters.Add(":id", id);
-                    cmd.ExecuteNonQuery();
+                    conn.Open();
+
+                    string sql = "DELETE FROM PARTIDOS WHERE ID_PARTIDO = :id";
+
+                    using (var cmd = new OracleCommand(sql, conn))
+                    {
+                        cmd.BindByName = true;
+
+                        cmd.Parameters.Add(":id", OracleDbType.Int32).Value = id;
+
+                        cmd.ExecuteNonQuery();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error Eliminar: " + ex.ToString());
+                throw;
             }
         }
     }
