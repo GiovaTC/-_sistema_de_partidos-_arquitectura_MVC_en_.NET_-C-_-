@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Oracle.ManagedDataAccess.Client;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace sistema_de_partidos.Data
 {
-    internal class PartidoDAO
+    public class PartidoDAO
     {
     }
 }
